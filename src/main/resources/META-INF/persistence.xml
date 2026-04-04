@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence xmlns="https://jakarta.ee/xml/ns/persistence"
+             version="3.0">
+
+    <persistence-unit name="hotel-reservation-pu" transaction-type="RESOURCE_LOCAL">
+
+        <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
+
+        <!-- Your entity classes -->
+        <class>ca.seneca.application.model.Guest</class>
+        <class>ca.seneca.application.model.Reservation</class>
+        <class>ca.seneca.application.model.Room</class>
+        <class>ca.seneca.application.model.RoomType</class>
+        <class>ca.seneca.application.model.ReservationRoom</class>
+        <class>ca.seneca.application.model.AddOn</class>
+        <class>ca.seneca.application.model.ReservationAddOn</class>
+        <class>ca.seneca.application.model.Payment</class>
+        <class>ca.seneca.application.model.Admin</class>
+        <class>ca.seneca.application.model.LoyaltyAccount</class>
+        <class>ca.seneca.application.model.LoyaltyTransaction</class>
+        <class>ca.seneca.application.model.WaitlistEntry</class>
+        <class>ca.seneca.application.model.Feedback</class>
+
+        <properties>
+            <!-- SQLite -->
+            <property name="jakarta.persistence.jdbc.driver" value="org.sqlite.JDBC"/>
+            <property name="jakarta.persistence.jdbc.url" value="jdbc:sqlite:hotel_reservation.db"/>
+
+            <!-- Hibernate -->
+            <property name="hibernate.dialect" value="org.hibernate.community.dialect.SQLiteDialect"/>
+            <property name="hibernate.hbm2ddl.auto" value="update"/>
+            <property name="hibernate.show_sql" value="true"/>
+            <property name="hibernate.format_sql" value="true"/>
+        </properties>
+
+    </persistence-unit>
+</persistence>

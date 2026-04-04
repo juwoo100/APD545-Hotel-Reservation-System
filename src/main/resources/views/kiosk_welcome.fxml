@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+
+<ScrollPane fitToHeight="true" fitToWidth="true"
+            xmlns="http://javafx.com/javafx/17.0.12"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="ca.seneca.application.controller.KioskWelcomeController">
+    <content>
+        <AnchorPane prefHeight="860" prefWidth="1400" style="-fx-background-color:#f4f6fa;">
+            <children>
+
+                <!-- SIDEBAR -->
+                <VBox layoutX="20" layoutY="20" prefHeight="820" prefWidth="240" spacing="16"
+                      style="-fx-background-color:#183153; -fx-background-radius:16;">
+                    <padding><Insets top="28" left="20" right="20" bottom="28"/></padding>
+                    <children>
+                        <Label text="Sheraton Hotel"
+                               style="-fx-text-fill:white; -fx-font-size:22; -fx-font-weight:bold;"/>
+                        <Label text="Self-Service Kiosk"
+                               style="-fx-text-fill:#c7d4ea; -fx-font-size:13;"/>
+                        <Separator opacity="0.3"/>
+                        <Button text="▶  Start Reservation" prefWidth="200" prefHeight="44"
+                                style="-fx-background-color:white; -fx-text-fill:#183153; -fx-font-weight:bold; -fx-background-radius:10; -fx-alignment:LEFT;"
+                                onAction="#handleStartReservation"/>
+                        <Button text="✉  Submit Feedback" prefWidth="200" prefHeight="44"
+                                style="-fx-background-color:#2e5b91; -fx-text-fill:white; -fx-background-radius:10; -fx-alignment:LEFT;"
+                                onAction="#handleSubmitFeedback"/>
+                        <Button text="📋  Rules &amp; Regulations" prefWidth="200" prefHeight="44"
+                                style="-fx-background-color:#2e5b91; -fx-text-fill:white; -fx-background-radius:10; -fx-alignment:LEFT;"
+                                onAction="#handleRules"/>
+                        <Button text="❓  Need Help?" prefWidth="200" prefHeight="44"
+                                style="-fx-background-color:#2e5b91; -fx-text-fill:white; -fx-background-radius:10; -fx-alignment:LEFT;"
+                                onAction="#handleNeedHelp"/>
+                        <Button text="🔒  Admin Login" prefWidth="200" prefHeight="44"
+                                style="-fx-background-color:#0f2040; -fx-text-fill:#aac4e0; -fx-background-radius:10; -fx-alignment:LEFT;"
+                                onAction="#handleAdminLogin"/>
+                    </children>
+                </VBox>
+
+                <!-- MAIN CONTENT -->
+                <VBox layoutX="290" layoutY="60" prefWidth="850" spacing="28">
+                    <children>
+                        <VBox spacing="10">
+                            <Label text="Welcome to Sheraton Hotel"
+                                   style="-fx-font-size:38; -fx-font-weight:bold; -fx-text-fill:#183153;"/>
+                            <Label text="Use our self-service kiosk to reserve your room quickly and easily. Follow the steps to enter your stay details, choose rooms and add-ons, and confirm your reservation."
+                                   style="-fx-font-size:15; -fx-text-fill:#516173;" wrapText="true" prefWidth="820"/>
+                        </VBox>
+
+                        <AnchorPane prefHeight="270" prefWidth="820"
+                                    style="-fx-background-color:#eef3f8; -fx-border-color:#c7d4e5; -fx-border-radius:14; -fx-background-radius:14;">
+                            <children>
+                                <ImageView fitHeight="255" fitWidth="820" layoutX="0" layoutY="8" preserveRatio="true">
+                                    <image><Image url="@Do_Not_Disturb_Travel_GIF_by_Expedia.gif"/></image>
+                                </ImageView>
+                            </children>
+                        </AnchorPane>
+
+                        <HBox spacing="20">
+                            <children>
+                                <Button text="Begin Booking" prefWidth="240" prefHeight="54"
+                                        style="-fx-background-color:#183153; -fx-text-fill:white; -fx-font-size:17; -fx-font-weight:bold; -fx-background-radius:12;"
+                                        onAction="#handleStartReservation"/>
+                                <Button text="Admin Login" prefWidth="180" prefHeight="54"
+                                        style="-fx-background-color:#516173; -fx-text-fill:white; -fx-font-size:15; -fx-background-radius:12;"
+                                        onAction="#handleAdminLogin"/>
+                            </children>
+                        </HBox>
+                    </children>
+                </VBox>
+
+            </children>
+        </AnchorPane>
+    </content>
+</ScrollPane>

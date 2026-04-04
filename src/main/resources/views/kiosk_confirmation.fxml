@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane prefHeight="900" prefWidth="1400"
+            style="-fx-background-color:linear-gradient(to bottom,#f0faf4,#e9eef5);"
+            xmlns="http://javafx.com/javafx/17.0.12"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="ca.seneca.application.controller.KioskConfirmationController">
+    <children>
+        <VBox layoutX="20" layoutY="20" prefHeight="860" prefWidth="240" spacing="16"
+              style="-fx-background-color:#183153; -fx-background-radius:16;">
+            <padding><Insets top="28" left="20" right="20" bottom="28"/></padding>
+            <children>
+                <Label text="Sheraton Hotel" style="-fx-text-fill:white; -fx-font-size:22; -fx-font-weight:bold;"/>
+                <Label text="Booking Complete!" style="-fx-text-fill:#7de8a0; -fx-font-size:14; -fx-font-weight:bold;"/>
+                <Separator opacity="0.3"/>
+                <Label text="✅ Guests"  style="-fx-text-fill:#8aaccc; -fx-font-size:12;"/>
+                <Label text="✅ Dates"   style="-fx-text-fill:#8aaccc; -fx-font-size:12;"/>
+                <Label text="✅ Rooms"   style="-fx-text-fill:#8aaccc; -fx-font-size:12;"/>
+                <Label text="✅ Details" style="-fx-text-fill:#8aaccc; -fx-font-size:12;"/>
+                <Label text="✅ Add-Ons" style="-fx-text-fill:#8aaccc; -fx-font-size:12;"/>
+                <Label text="✅ Confirmed" style="-fx-text-fill:#7de8a0; -fx-font-size:12; -fx-font-weight:bold;"/>
+            </children>
+        </VBox>
+
+        <VBox layoutX="295" layoutY="120" prefWidth="860" spacing="28" alignment="CENTER">
+            <children>
+                <Label text="🎉 Reservation Confirmed!"
+                       style="-fx-font-size:42; -fx-font-weight:bold; -fx-text-fill:#2d7d46;"/>
+                <Label fx:id="guestNameLabel"
+                       style="-fx-font-size:20; -fx-text-fill:#183153;" text=""/>
+
+                <VBox spacing="12" alignment="CENTER"
+                      style="-fx-background-color:white; -fx-padding:36; -fx-background-radius:16; -fx-border-color:#b2dfcc; -fx-border-radius:16;"
+                      prefWidth="600">
+                    <children>
+                        <Label text="Your Reservation Number" style="-fx-font-size:15; -fx-text-fill:#516173;"/>
+                        <Label fx:id="reservationNumberLabel"
+                               style="-fx-font-size:30; -fx-font-weight:bold; -fx-text-fill:#183153;" text=""/>
+                        <Separator/>
+                        <Label fx:id="thankYouLabel"
+                               style="-fx-font-size:14; -fx-text-fill:#516173;" text=""
+                               wrapText="true" maxWidth="520" textAlignment="CENTER"/>
+                    </children>
+                </VBox>
+
+                <Button text="← Return to Home" prefWidth="260" prefHeight="52"
+                        style="-fx-background-color:#183153; -fx-text-fill:white; -fx-font-size:17; -fx-font-weight:bold; -fx-background-radius:12;"
+                        onAction="#handleReturnHome"/>
+            </children>
+        </VBox>
+    </children>
+</AnchorPane>

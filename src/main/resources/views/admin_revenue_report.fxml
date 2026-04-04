@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane prefHeight="900" prefWidth="1400" style="-fx-background-color:#f4f6fa;"
+            xmlns="http://javafx.com/javafx/17.0.12"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="ca.seneca.application.controller.AdminRevenueReportController">
+    <children>
+        <VBox layoutX="0" layoutY="0" prefHeight="900" prefWidth="240" spacing="8"
+              style="-fx-background-color:#183153;">
+            <padding><Insets top="28" left="16" right="16" bottom="20"/></padding>
+            <children>
+                <Label text="Hotel Admin" style="-fx-text-fill:white; -fx-font-size:20; -fx-font-weight:bold;"/>
+                <Separator style="-fx-background-color:#2e5b91;"/>
+                <Button prefWidth="208" prefHeight="36" text="✕  Close Window"
+                        style="-fx-background-color:#c0392b; -fx-text-fill:white; -fx-alignment:BASELINE_LEFT; -fx-background-radius:8;"
+                        onAction="#handleClose"/>
+            </children>
+        </VBox>
+
+        <Label layoutX="268" layoutY="30"
+               style="-fx-font-size:28; -fx-font-weight:bold; -fx-text-fill:#183153;"
+               text="💰 Revenue Report"/>
+
+        <Label layoutX="268" layoutY="90"
+               style="-fx-font-size:15; -fx-text-fill:#516173;"
+               text="This section is ready for Person A's backend integration in Milestone 3. Navigation and window management are fully functional."/>
+
+        <Button layoutX="268" layoutY="140" prefWidth="200" prefHeight="42"
+                text="Close Window"
+                style="-fx-background-color:#183153; -fx-text-fill:white; -fx-background-radius:10;"
+                onAction="#handleClose"/>
+    </children>
+</AnchorPane>

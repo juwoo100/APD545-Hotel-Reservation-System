@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<ScrollPane fitToHeight="true" fitToWidth="true"
+            xmlns="http://javafx.com/javafx/17.0.12"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="ca.seneca.application.controller.AdminDashboardController">
+    <content>
+        <AnchorPane prefHeight="900" prefWidth="1400" style="-fx-background-color:#f4f6fa;">
+            <children>
+
+                <!-- SIDEBAR -->
+                <VBox layoutX="0" layoutY="0" prefHeight="900" prefWidth="240" spacing="8"
+                      style="-fx-background-color:#183153;">
+                    <padding><Insets top="28" left="16" right="16" bottom="20"/></padding>
+                    <children>
+                        <Label text="Hotel Admin" style="-fx-text-fill:white; -fx-font-size:22; -fx-font-weight:bold;"/>
+                        <Label text="Management Dashboard" style="-fx-text-fill:#c7d4ea; -fx-font-size:12;"/>
+                        <Separator style="-fx-background-color:#2e5b91;"/>
+
+                        <Button prefWidth="208" prefHeight="38" text="📊  Dashboard"
+                                style="-fx-background-color:#2e5b91; -fx-text-fill:white; -fx-alignment:BASELINE_LEFT; -fx-background-radius:8;"/>
+                        <Button prefWidth="208" prefHeight="38" text="📋  Reservations"
+                                style="-fx-text-fill:white; -fx-alignment:BASELINE_LEFT; -fx-background-color:transparent;"
+                                onAction="#openReservations"/>
+                        <Button prefWidth="208" prefHeight="38" text="💳  Payments"
+                                style="-fx-text-fill:white; -fx-alignment:BASELINE_LEFT; -fx-background-color:transparent;"
+                                onAction="#openPayments"/>
+                        <Button prefWidth="208" prefHeight="38" text="🚪  Checkout"
+                                style="-fx-text-fill:white; -fx-alignment:BASELINE_LEFT; -fx-background-color:transparent;"
+                                onAction="#openCheckout"/>
+                        <Button prefWidth="208" prefHeight="38" text="⏳  Waitlist"
+                                style="-fx-text-fill:white; -fx-alignment:BASELINE_LEFT; -fx-background-color:transparent;"
+                                onAction="#openWaitlist"/>
+                        <Button prefWidth="208" prefHeight="38" text="⭐  Loyalty Program"
+                                style="-fx-text-fill:white; -fx-alignment:BASELINE_LEFT; -fx-background-color:transparent;"
+                                onAction="#openLoyalty"/>
+                        <Button prefWidth="208" prefHeight="38" text="💬  Feedback"
+                                style="-fx-text-fill:white; -fx-alignment:BASELINE_LEFT; -fx-background-color:transparent;"
+                                onAction="#openFeedback"/>
+                        <Button prefWidth="208" prefHeight="38" text="📈  Occupancy Report"
+                                style="-fx-text-fill:white; -fx-alignment:BASELINE_LEFT; -fx-background-color:transparent;"
+                                onAction="#openOccupancyReport"/>
+                        <Button prefWidth="208" prefHeight="38" text="💰  Revenue Report"
+                                style="-fx-text-fill:white; -fx-alignment:BASELINE_LEFT; -fx-background-color:transparent;"
+                                onAction="#openRevenueReport"/>
+                        <Button prefWidth="208" prefHeight="38" text="🗒  Activity Logs"
+                                style="-fx-text-fill:white; -fx-alignment:BASELINE_LEFT; -fx-background-color:transparent;"
+                                onAction="#openActivityLogs"/>
+
+                        <Separator style="-fx-background-color:#2e5b91;"/>
+                        <Button prefWidth="208" prefHeight="38" text="← Back to Kiosk"
+                                style="-fx-text-fill:#aac4e0; -fx-alignment:BASELINE_LEFT; -fx-background-color:transparent;"
+                                onAction="#handleBackToKiosk"/>
+                        <Button prefWidth="208" prefHeight="38" text="🔒  Logout"
+                                style="-fx-text-fill:#ff9999; -fx-alignment:BASELINE_LEFT; -fx-background-color:transparent;"
+                                onAction="#handleLogout"/>
+                    </children>
+                </VBox>
+
+                <!-- HEADER -->
+                <Label layoutX="268" layoutY="28"
+                       style="-fx-font-size:28; -fx-font-weight:bold; -fx-text-fill:#183153;"
+                       text="Reservation Dashboard"/>
+
+                <!-- SEARCH FILTERS -->
+                <HBox layoutX="268" layoutY="80" spacing="12" prefHeight="36">
+                    <children>
+                        <TextField prefWidth="180" prefHeight="36" promptText="Guest Name"/>
+                        <TextField prefWidth="140" prefHeight="36" promptText="Phone"/>
+                        <ComboBox prefWidth="140" prefHeight="36" promptText="Status"/>
+                        <DatePicker prefHeight="36" promptText="Check-In"/>
+                        <DatePicker prefHeight="36" promptText="Check-Out"/>
+                        <Button text="Search"
+                                style="-fx-background-color:#183153; -fx-text-fill:white; -fx-background-radius:6;"
+                                prefHeight="36"/>
+                        <Button text="Clear" prefHeight="36"/>
+                    </children>
+                </HBox>
+
+                <!-- TABLE -->
+                <TableView layoutX="268" layoutY="130" prefHeight="720" prefWidth="1115">
+                    <columns>
+                        <TableColumn prefWidth="90"  text="Reservation ID"/>
+                        <TableColumn prefWidth="150" text="Guest Name"/>
+                        <TableColumn prefWidth="120" text="Phone"/>
+                        <TableColumn prefWidth="160" text="Room"/>
+                        <TableColumn prefWidth="110" text="Check-In"/>
+                        <TableColumn prefWidth="110" text="Check-Out"/>
+                        <TableColumn prefWidth="110" text="Status"/>
+                        <TableColumn prefWidth="120" text="Balance"/>
+                        <TableColumn prefWidth="130" text="Action"/>
+                    </columns>
+                </TableView>
+
+            </children>
+        </AnchorPane>
+    </content>
+</ScrollPane>

@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane prefHeight="900" prefWidth="1400"
+            style="-fx-background-color:linear-gradient(to bottom,#f6f8fb,#e9eef5);"
+            xmlns="http://javafx.com/javafx/17.0.12"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="ca.seneca.application.controller.KioskDatesController">
+    <children>
+        <VBox layoutX="20" layoutY="20" prefHeight="860" prefWidth="240" spacing="16"
+              style="-fx-background-color:#183153; -fx-background-radius:16;">
+            <padding><Insets top="28" left="20" right="20" bottom="28"/></padding>
+            <children>
+                <Label text="Sheraton Hotel" style="-fx-text-fill:white; -fx-font-size:22; -fx-font-weight:bold;"/>
+                <Label text="Step 2 of 6"    style="-fx-text-fill:#c7d4ea; -fx-font-size:13;"/>
+                <Separator opacity="0.3"/>
+                <Label text="✅ Guests"  style="-fx-text-fill:#8aaccc; -fx-font-size:12;"/>
+                <Label text="▶ Dates"   style="-fx-text-fill:white; -fx-font-size:12; -fx-font-weight:bold;"/>
+                <Label text="○ Rooms"   style="-fx-text-fill:#8aaccc; -fx-font-size:12;"/>
+                <Label text="○ Details" style="-fx-text-fill:#8aaccc; -fx-font-size:12;"/>
+                <Label text="○ Add-Ons" style="-fx-text-fill:#8aaccc; -fx-font-size:12;"/>
+                <Label text="○ Review"  style="-fx-text-fill:#8aaccc; -fx-font-size:12;"/>
+            </children>
+        </VBox>
+
+        <VBox layoutX="295" layoutY="50" prefWidth="680" spacing="28">
+            <children>
+                <Label text="Step 2: Choose Your Dates"
+                       style="-fx-font-size:34; -fx-font-weight:bold; -fx-text-fill:#183153;"/>
+                <Label text="Select your check-in and check-out dates. Minimum stay is 1 night."
+                       style="-fx-font-size:15; -fx-text-fill:#516173;"/>
+
+                <VBox spacing="22" style="-fx-background-color:white; -fx-padding:30; -fx-background-radius:14; -fx-border-color:#d9e2ec; -fx-border-radius:14;">
+                    <children>
+                        <HBox spacing="50" alignment="CENTER_LEFT">
+                            <children>
+                                <VBox spacing="8">
+                                    <Label text="Check-In Date" style="-fx-font-size:16; -fx-font-weight:bold;"/>
+                                    <DatePicker fx:id="checkInDatePicker" prefWidth="200"/>
+                                </VBox>
+                                <VBox spacing="8">
+                                    <Label text="Check-Out Date" style="-fx-font-size:16; -fx-font-weight:bold;"/>
+                                    <DatePicker fx:id="checkOutDatePicker" prefWidth="200"/>
+                                </VBox>
+                            </children>
+                        </HBox>
+                        <Label fx:id="validationLabel" style="-fx-text-fill:#c0392b; -fx-font-size:13;" text=""/>
+                    </children>
+                </VBox>
+
+                <HBox spacing="16">
+                    <children>
+                        <Button text="← Back" prefWidth="150" prefHeight="46"
+                                style="-fx-background-color:#dfe6ee; -fx-background-radius:10;"
+                                onAction="#handleBack"/>
+                        <Button text="Next →" prefWidth="150" prefHeight="46"
+                                style="-fx-background-color:#183153; -fx-text-fill:white; -fx-font-weight:bold; -fx-background-radius:10;"
+                                onAction="#handleNext"/>
+                    </children>
+                </HBox>
+            </children>
+        </VBox>
+    </children>
+</AnchorPane>

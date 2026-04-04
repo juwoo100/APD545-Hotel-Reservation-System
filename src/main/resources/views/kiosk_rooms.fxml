@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane prefHeight="900" prefWidth="1400" style="-fx-background-color:linear-gradient(to bottom,#f6f8fb,#e9eef5);" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ca.seneca.application.controller.KioskRoomSelectionController">
+    <children>
+        <VBox layoutX="20" layoutY="20" prefHeight="860" prefWidth="240" spacing="16" style="-fx-background-color:#183153; -fx-background-radius:16;">
+            <padding><Insets bottom="28" left="20" right="20" top="28" /></padding>
+            <children>
+                <Label style="-fx-text-fill:white; -fx-font-size:22; -fx-font-weight:bold;" text="Sheraton Hotel" />
+                <Label style="-fx-text-fill:#c7d4ea; -fx-font-size:13;" text="Step 3 of 6" />
+                <Separator opacity="0.3" />
+                <Label style="-fx-text-fill:#8aaccc; -fx-font-size:12;" text="✅ Guests" />
+                <Label style="-fx-text-fill:#8aaccc; -fx-font-size:12;" text="✅ Dates" />
+                <Label style="-fx-text-fill:white; -fx-font-size:12; -fx-font-weight:bold;" text="▶ Rooms" />
+                <Label style="-fx-text-fill:#8aaccc; -fx-font-size:12;" text="○ Details" />
+                <Label style="-fx-text-fill:#8aaccc; -fx-font-size:12;" text="○ Add-Ons" />
+                <Label style="-fx-text-fill:#8aaccc; -fx-font-size:12;" text="○ Review" />
+            </children>
+        </VBox>
+
+        <VBox layoutX="295" layoutY="20" prefWidth="1070" spacing="20">
+            <children>
+                <Label style="-fx-font-size:34; -fx-font-weight:bold; -fx-text-fill:#183153;" text="Step 3: Select Your Rooms" />
+                <Label fx:id="suggestionLabel" style="-fx-font-size:14; -fx-text-fill:#516173;" text="" />
+
+                <!-- Suggested Plan box -->
+                <VBox spacing="10" style="-fx-background-color:#eef4fb; -fx-padding:18; -fx-background-radius:12; -fx-border-color:#c8d9ec; -fx-border-radius:12;">
+                    <children>
+                        <Label style="-fx-font-size:18; -fx-font-weight:bold;" text="Suggested Room Plan" />
+                        <Button onAction="#handleAcceptSuggestion" prefHeight="40" prefWidth="230" style="-fx-background-color:#183153; -fx-text-fill:white; -fx-background-radius:10;" text="✔  Accept Suggested Plan" />
+                    </children>
+                </VBox>
+
+                <!-- Room cards -->
+                <HBox spacing="16">
+                    <children>
+                        <!-- Single -->
+                        <VBox prefWidth="230" spacing="10" style="-fx-background-color:white; -fx-padding:18; -fx-background-radius:12; -fx-border-color:#d9e2ec; -fx-border-radius:12;">
+                            <children>
+                                <Label style="-fx-font-size:17; -fx-font-weight:bold;" text="Single Room" />
+                                <Label style="-fx-text-fill:#516173;" text="Max 2 guests" />
+                                <Label style="-fx-text-fill:#183153; -fx-font-weight:bold;" text="\$120 / night" />
+                                <Label text="Quantity:" />
+                                <Spinner fx:id="singleSpinner" prefWidth="140" />
+                            </children>
+                        </VBox>
+                        <!-- Double -->
+                        <VBox prefWidth="230" spacing="10" style="-fx-background-color:white; -fx-padding:18; -fx-background-radius:12; -fx-border-color:#d9e2ec; -fx-border-radius:12;">
+                            <children>
+                                <Label style="-fx-font-size:17; -fx-font-weight:bold;" text="Double Room" />
+                                <Label style="-fx-text-fill:#516173;" text="Max 4 guests" />
+                                <Label style="-fx-text-fill:#183153; -fx-font-weight:bold;" text="\$200 / night" />
+                                <Label text="Quantity:" />
+                                <Spinner fx:id="doubleSpinner" prefWidth="140" />
+                            </children>
+                        </VBox>
+                        <!-- Deluxe -->
+                        <VBox prefWidth="230" spacing="10" style="-fx-background-color:white; -fx-padding:18; -fx-background-radius:12; -fx-border-color:#d9e2ec; -fx-border-radius:12;">
+                            <children>
+                                <Label style="-fx-font-size:17; -fx-font-weight:bold;" text="Deluxe Room" />
+                                <Label style="-fx-text-fill:#516173;" text="Max 2 guests" />
+                                <Label style="-fx-text-fill:#183153; -fx-font-weight:bold;" text="\$260 / night" />
+                                <Label text="Quantity:" />
+                                <Spinner fx:id="deluxeSpinner" prefWidth="140" />
+                            </children>
+                        </VBox>
+                        <!-- Penthouse -->
+                        <VBox prefWidth="230" spacing="10" style="-fx-background-color:white; -fx-padding:18; -fx-background-radius:12; -fx-border-color:#d9e2ec; -fx-border-radius:12;">
+                            <children>
+                                <Label style="-fx-font-size:17; -fx-font-weight:bold;" text="Penthouse" />
+                                <Label style="-fx-text-fill:#516173;" text="Max 2 guests" />
+                                <Label style="-fx-text-fill:#183153; -fx-font-weight:bold;" text="\$450 / night" />
+                                <Label text="Quantity:" />
+                                <Spinner fx:id="penthouseSpinner" prefWidth="140" />
+                            </children>
+                        </VBox>
+                    </children>
+                </HBox>
+
+                <Label fx:id="validationLabel" style="-fx-text-fill:#c0392b; -fx-font-size:13;" text="" wrapText="true" />
+
+                <HBox spacing="16">
+                    <children>
+                        <Button onAction="#handleBack" prefHeight="46" prefWidth="150" style="-fx-background-color:#dfe6ee; -fx-background-radius:10;" text="← Back" />
+                        <Button onAction="#handleNext" prefHeight="46" prefWidth="180" style="-fx-background-color:#183153; -fx-text-fill:white; -fx-font-weight:bold; -fx-background-radius:10;" text="Next →" />
+                    </children>
+                </HBox>
+            </children>
+        </VBox>
+    </children>
+</AnchorPane>

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane prefWidth="1400" prefHeight="900"
+            style="-fx-background-color:linear-gradient(to bottom,#eef3f9,#dfe7f3);"
+            xmlns="http://javafx.com/javafx/17.0.12"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="ca.seneca.application.controller.AdminLoginController">
+    <children>
+        <VBox layoutX="490" layoutY="180" prefWidth="420" spacing="18"
+              style="-fx-background-color:white; -fx-padding:44; -fx-background-radius:16; -fx-border-color:#d9e2ec; -fx-border-radius:16;">
+            <children>
+                <Label text="Administrator Login"
+                       style="-fx-font-size:28; -fx-font-weight:bold; -fx-text-fill:#183153;"/>
+                <Label text="Access the hotel management dashboard"
+                       style="-fx-text-fill:#6b7b8a;"/>
+                <Separator/>
+
+                <Label text="Username"/>
+                <TextField fx:id="usernameField" prefWidth="340" prefHeight="42" promptText="Enter username"/>
+
+                <Label text="Password"/>
+                <PasswordField fx:id="passwordField" prefWidth="340" prefHeight="42" promptText="Enter password"/>
+
+                <Label fx:id="errorLabel" style="-fx-text-fill:#c0392b;" text=""/>
+
+                <Button text="Login" prefWidth="340" prefHeight="46"
+                        style="-fx-background-color:#183153; -fx-text-fill:white; -fx-font-size:15; -fx-font-weight:bold; -fx-background-radius:10;"
+                        onAction="#handleLogin"/>
+
+                <Button text="← Back to Kiosk" prefWidth="340" prefHeight="38"
+                        style="-fx-background-color:transparent; -fx-text-fill:#516173; -fx-border-color:#d9e2ec; -fx-border-radius:8; -fx-background-radius:8;"
+                        onAction="#handleBackToKiosk"/>
+
+                <Label text="Credentials: admin / admin123"
+                       style="-fx-text-fill:#b0bec5; -fx-font-size:11;"/>
+            </children>
+        </VBox>
+    </children>
+</AnchorPane>
