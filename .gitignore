@@ -1,7 +1,4 @@
 target/
-!.mvn/wrapper/maven-wrapper.jar
-!**/src/main/**/target/
-!**/src/test/**/target/
 .kotlin
 
 ### IntelliJ IDEA ###
@@ -37,3 +34,20 @@ build/
 
 ### Mac OS ###
 .DS_Store
+
+### Environment
+.env
+.env.*
+
+### Logs
+logs/
+*.log
+
+### JVM crach logs
+hs_err_pid*
+replay_pid*
+
+# Database
+*.db
+*.sqlite
+*.sqlite3
