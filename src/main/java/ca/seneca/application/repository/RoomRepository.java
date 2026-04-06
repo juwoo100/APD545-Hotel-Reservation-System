@@ -1,47 +1,47 @@
-package ca.seneca.application.repository;
+package com.hotel.repository;
 
-import ca.seneca.application.enums.RoomAvailabilityStatus;
-import ca.seneca.application.model.Room;
+import com.hotel.db.Database;
+import com.hotel.model.RoomEntity;
+import com.hotel.model.enums.RoomStatus;
+import com.hotel.model.enums.RoomType;
 import jakarta.persistence.EntityManager;
-import java.time.LocalDate;
 import java.util.List;
 
 public class RoomRepository {
+    private final Database db = Database.getInstance();
 
-    public Room save(EntityManager em, Room room) {
-        if (room.getRoomId() == null) {
-            em.persist(room);
-            return room;
-        }
-        return em.merge(room);
+    public void save(RoomEntity r) {
+        EntityManager em = db.createEntityManager();
+        try { em.getTransaction().begin();
+              if (r.getId() == null) em.persist(r); else em.merge(r);
+              em.getTransaction().commit(); }
+        catch (Exception e) { em.getTransaction().rollback(); throw e; }
+        finally { em.close(); }
     }
 
-    public Room findById(EntityManager em, Integer id) {
-        return em.find(Room.class, id);
+    public List<RoomEntity> findAll() {
+        EntityManager em = db.createEntityManager();
+        try { return em.createQuery("SELECT r FROM RoomEntity r ORDER BY r.roomNumber", RoomEntity.class).getResultList(); }
+        finally { em.close(); }
     }
 
-    public List<Room> findAll(EntityManager em) {
-        return em.createQuery("SELECT r FROM Room r", Room.class)
-                .getResultList();
+    public List<RoomEntity> findAvailableByType(RoomType type) {
+        EntityManager em = db.createEntityManager();
+        try { return em.createQuery(
+            "SELECT r FROM RoomEntity r WHERE r.roomType=:t AND r.status='AVAILABLE'", RoomEntity.class)
+            .setParameter("t", type).getResultList(); }
+        finally { em.close(); }
     }
 
-    public List<Room> findAvailableRoomsByTypeName(EntityManager em, String typeName) {
-        return em.createQuery("""
-                SELECT r
-                FROM Room r
-                WHERE LOWER(r.roomType.typeName) = :typeName
-                  AND r.availabilityStatus = :status
-                ORDER BY r.roomNumber
-                """, Room.class)
-                .setParameter("typeName", typeName.toLowerCase())
-                .setParameter("status", RoomAvailabilityStatus.AVAILABLE)
-                .getResultList();
+    public long countByType(RoomType type) {
+        EntityManager em = db.createEntityManager();
+        try { return em.createQuery("SELECT COUNT(r) FROM RoomEntity r WHERE r.roomType=:t", Long.class)
+            .setParameter("t", type).getSingleResult(); }
+        finally { em.close(); }
     }
 
-    public void update(Room room) {
-
+    public RoomEntity findById(Long id) {
+        EntityManager em = db.createEntityManager();
+        try { return em.find(RoomEntity.class, id); } finally { em.close(); }
     }
-//    public List<Room> findAvailableRoomByTypeAndDate(EntityManager em, String typeName, LocalDate checkIn, LocalDate checkOut) {
-//
-//    }
 }
