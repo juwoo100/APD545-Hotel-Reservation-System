@@ -1,6 +1,5 @@
 package ca.seneca.application.model;
 
-import ca.seneca.application.enums.BedType;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
@@ -20,10 +19,6 @@ public class RoomType {
     private String typeName;
 
     private Integer capacity;
-
-    @Enumerated(EnumType.STRING)
-    @Column(name = "bed_type", nullable = false)
-    private BedType bedType;
 
     @Column(name = "base_price", nullable = false)
     private Double basePrice;
@@ -61,14 +56,6 @@ public class RoomType {
 
     public void setCapacity(Integer capacity) {
         this.capacity = capacity;
-    }
-
-    public BedType getBedType() {
-        return bedType;
-    }
-
-    public void setBedType(BedType bedType) {
-        this.bedType = bedType;
     }
 
     public Double getBasePrice() {

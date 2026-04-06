@@ -1,6 +1,8 @@
 package ca.seneca.application.service;
 
+import ca.seneca.application.model.AddOn;
 import ca.seneca.application.model.RoomType;
+import ca.seneca.application.repository.AddOnRepository;
 import ca.seneca.application.util.JpaUtil;
 import ca.seneca.application.viewmodel.BookingDraft;
 import jakarta.persistence.EntityManager;
@@ -10,9 +12,11 @@ import java.util.Map;
 
 public class StandardPricingService implements PricingService {
     private final PricingStrategy pricingStrategy;
+    private final AddOnRepository addOnRepository;
 
     public StandardPricingService() {
         this.pricingStrategy = new StandardPricingStrategy();
+        this.addOnRepository = new AddOnRepository();
     }
 
     @Override
@@ -32,18 +36,38 @@ public class StandardPricingService implements PricingService {
         EntityManager em = JpaUtil.getEntityManager();
 
         try {
+            System.out.println("roomSelections = " + draft.getRoomSelections());
+
             double subtotal = 0.0;
+            // Calculation for room subtotal
+            for (String addOnName : draft.getAddOns()) {
+                AddOn addOn = addOnRepository.findByName(em, addOnName);
+                if (addOn == null) {
+                    throw new IllegalArgumentException("Add-on not found. [" + addOnName + "]");
+                }
+
+                double addOnPrice = addOn.getBasePrice();
+
+                if (addOn.getPricingModel() != null && addOn.getPricingModel().equalsIgnoreCase("PER_NIGHT")) {
+                    addOnPrice *= draft.getNights();
+                }
+                subtotal += addOnPrice;
+            }
 
             for (Map.Entry<String, Integer> entry : draft.getRoomSelections().entrySet()) {
                 String roomTypeName = entry.getKey();
                 int quantity = entry.getValue();
+
+                System.out.println("Looking for room type: [" + roomTypeName + "]");
 
                 RoomType roomType = em.createQuery(
                                 "SELECT rt FROM RoomType rt WHERE LOWER(rt.typeName) = :typeName",
                                 RoomType.class
                         )
                         .setParameter("typeName", roomTypeName.toLowerCase())
-                        .getSingleResult();
+                        .getResultStream()
+                        .findFirst()
+                        .orElseThrow(() -> new IllegalArgumentException("Room type not found: [" + roomTypeName + "]"));
 
                 LocalDate current = draft.getCheckInDate();
                 while (current.isBefore(draft.getCheckOutDate())) {
@@ -53,6 +77,7 @@ public class StandardPricingService implements PricingService {
                 }
             }
 
+            System.out.println("Calculated subtotal = " + subtotal);
             return subtotal;
 
         } finally {

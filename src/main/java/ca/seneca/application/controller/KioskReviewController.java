@@ -39,7 +39,8 @@ public class KioskReviewController {
             total    = subtotal + tax;
         } catch (Exception e) {
             subtotal = tax = total = 0;
-            System.err.println("[KioskReview] Pricing error: " + e.getMessage());
+            e.printStackTrace();
+            // System.err.println("[KioskReview] Pricing error: " + e.getMessage());
         }
 
         setText(guestNameLabel,    draft.getFullName().trim());

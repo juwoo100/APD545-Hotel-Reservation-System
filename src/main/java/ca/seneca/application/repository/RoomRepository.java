@@ -3,7 +3,7 @@ package ca.seneca.application.repository;
 import ca.seneca.application.enums.RoomAvailabilityStatus;
 import ca.seneca.application.model.Room;
 import jakarta.persistence.EntityManager;
-
+import java.time.LocalDate;
 import java.util.List;
 
 public class RoomRepository {
@@ -37,4 +37,11 @@ public class RoomRepository {
                 .setParameter("status", RoomAvailabilityStatus.AVAILABLE)
                 .getResultList();
     }
+
+    public void update(Room room) {
+
+    }
+//    public List<Room> findAvailableRoomByTypeAndDate(EntityManager em, String typeName, LocalDate checkIn, LocalDate checkOut) {
+//
+//    }
 }

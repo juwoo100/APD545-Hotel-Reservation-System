@@ -19,7 +19,7 @@ import javafx.stage.Stage;
 public class Main extends Application {
     @Override
     public void start(Stage stage) {
-        // DatabaseSeeder.seed();
+        DatabaseSeeder.seed();
 
         SceneManager sceneManager = new SceneManager(stage);
 
