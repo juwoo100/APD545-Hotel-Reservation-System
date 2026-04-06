@@ -1,67 +1,62 @@
-package ca.seneca.application.app;
+package com.hotel.app;
 
-import ca.seneca.application.model.Room;
-import ca.seneca.application.model.RoomType;
-import ca.seneca.application.util.JpaUtil;
-import jakarta.persistence.EntityManager;
+import com.hotel.logging.AppLogger;
+import com.hotel.model.AdminUser;
+import com.hotel.model.RoomEntity;
+import com.hotel.model.enums.AdminRole;
+import com.hotel.model.enums.RoomType;
+import com.hotel.repository.AdminUserRepository;
+import com.hotel.repository.RoomRepository;
+import com.hotel.security.PasswordHasher;
 
+import java.util.logging.Logger;
+
+/**
+ * Seeds the H2 database on first run with default rooms and admin accounts.
+ * Idempotent — safe to call on every startup.
+ */
 public class DatabaseSeeder {
-    public static void seed() {
-        EntityManager em = JpaUtil.getEntityManager();
 
-        try {
-            Long roomTypeCount = em.createQuery("SELECT COUNT(rt) FROM RoomType rt", Long.class)
-                    .getSingleResult();
+    private static final Logger log = AppLogger.get(DatabaseSeeder.class);
 
-            if (roomTypeCount > 0) {
-                return;
-            }
+    private DatabaseSeeder() {}
 
-            em.getTransaction().begin();
+    public static void seedAll() {
+        seedRooms();
+        seedAdmins();
+    }
 
-            RoomType single = new RoomType();
-            single.setTypeName("Single");
-            single.setCapacity(2);
-            single.setBasePrice(100.0);
-            em.persist(single);
-
-            RoomType doubleRoom = new RoomType();
-            doubleRoom.setTypeName("Double");
-            doubleRoom.setCapacity(4);
-            doubleRoom.setBasePrice(180.0);
-            em.persist(doubleRoom);
-
-            RoomType penthouse = new RoomType();
-            penthouse.setTypeName("Penthouse");
-            penthouse.setCapacity(6);
-            penthouse.setBasePrice(300.0);
-            em.persist(penthouse);
-
-            Room room1 = new Room();
-            room1.setRoomNumber("101");
-            room1.setFloor(1);
-            room1.setRoomType(single);
-            em.persist(room1);
-
-            Room room2 = new Room();
-            room2.setRoomNumber("201");
-            room2.setFloor(2);
-            room2.setRoomType(doubleRoom);
-            em.persist(room2);
-
-            Room room3 = new Room();
-            room3.setRoomNumber("301");
-            room3.setFloor(3);
-            room3.setRoomType(penthouse);
-            em.persist(room3);
-
-            em.getTransaction().commit();
-
-        } catch (Exception e) {
-            if (em.getTransaction().isActive()) {
-                em.getTransaction().rollback();
-            }
-            e.printStackTrace();
+    private static void seedRooms() {
+        RoomRepository repo = new RoomRepository();
+        if (repo.countByType(RoomType.SINGLE) > 0) {
+            log.info("Rooms already seeded — skipping.");
+            return;
         }
+        log.info("Seeding rooms...");
+        // Singles: 101-106
+        for (int i = 1; i <= 6; i++)
+            repo.save(new RoomEntity("10" + i, RoomType.SINGLE, 2, 120.0));
+        // Doubles: 201-206
+        for (int i = 1; i <= 6; i++)
+            repo.save(new RoomEntity("20" + i, RoomType.DOUBLE, 4, 200.0));
+        // Deluxe: 301-304
+        for (int i = 1; i <= 4; i++)
+            repo.save(new RoomEntity("30" + i, RoomType.DELUXE, 2, 260.0));
+        // Penthouse: 401-402
+        repo.save(new RoomEntity("401", RoomType.PENTHOUSE, 2, 450.0));
+        repo.save(new RoomEntity("402", RoomType.PENTHOUSE, 2, 450.0));
+        log.info("Seeded 18 rooms.");
+    }
+
+    private static void seedAdmins() {
+        AdminUserRepository repo = new AdminUserRepository();
+        if (repo.count() > 0) {
+            log.info("Admin accounts already seeded — skipping.");
+            return;
+        }
+        log.info("Seeding admin accounts...");
+        repo.persist(new AdminUser("admin",   PasswordHasher.hash("admin123"),   AdminRole.ADMIN,   "Hotel Administrator"));
+        repo.persist(new AdminUser("manager", PasswordHasher.hash("manager123"), AdminRole.MANAGER, "Hotel Manager"));
+        log.info("Seeded: admin/admin123  |  manager/manager123");
     }
 }

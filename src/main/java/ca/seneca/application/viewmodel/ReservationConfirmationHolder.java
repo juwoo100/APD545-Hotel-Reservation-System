@@ -1,4 +1,4 @@
-package ca.seneca.application.viewmodel;
+package com.hotel.viewmodel;
 
 public class ReservationConfirmationHolder {
     private static String reservationNumber;

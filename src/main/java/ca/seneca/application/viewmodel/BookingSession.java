@@ -1,4 +1,4 @@
-package ca.seneca.application.viewmodel;
+package com.hotel.viewmodel;
 
 /**
  * Static shared state across the kiosk booking flow.
