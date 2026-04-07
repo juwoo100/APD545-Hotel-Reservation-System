@@ -33,7 +33,7 @@ public class AdminLoginController {
 
         if (ADMIN_USER.equals(username) && ADMIN_PASS.equals(password)) {
             AppContext.getSceneManager().switchScene(
-                    "/com/hotel/view/admin_dashboard.fxml", "Admin Dashboard");
+                    "/views/admin_dashboard.fxml", "Admin Dashboard");
         } else {
             setError("Invalid username or password. Try admin / admin123");
             passwordField.clear();
@@ -43,7 +43,7 @@ public class AdminLoginController {
     @FXML
     private void handleBackToKiosk() {
         AppContext.getSceneManager().switchScene(
-                "/com/hotel/view/kiosk_welcome.fxml", "Welcome — Sheraton Hotel");
+                "/views/kiosk_welcome.fxml", "Welcome — Sheraton Hotel");
     }
 
     private void setError(String msg) {

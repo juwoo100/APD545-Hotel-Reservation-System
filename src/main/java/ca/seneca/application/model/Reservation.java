@@ -1,7 +1,7 @@
 package ca.seneca.application.model;
 
-import ca.seneca.application.enums.PaymentStatus;
-import ca.seneca.application.enums.ReservationStatus;
+import ca.seneca.application.model.enums.PaymentStatus;
+import ca.seneca.application.model.enums.ReservationStatus;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
@@ -41,8 +41,17 @@ public class Reservation {
     @Column(name = "sub_total")
     private Double subTotal;
 
+    @Column(name = "used_points")
+    private Integer usedPoints;
+
+    @Column(name = "earned_points")
+    private Integer earnedPoints;
+
     @Column(name = "discount_amount")
     private Double discountAmount;
+
+    @Column(name = "discount_percent")
+    private Double discountPercent;
 
     @Column(name = "created_at")
     private LocalDateTime createdAt;
@@ -141,12 +150,34 @@ public class Reservation {
         this.subTotal = subTotal;
     }
 
+    public Integer getUsedPoints() {
+        return usedPoints;
+    }
+
+    public void setUsedPoints(Integer usedPoints) {
+        this.usedPoints = usedPoints;
+    }
+
+    public Integer getEarnedPoints() {
+        return earnedPoints;
+    }
+
+    public void setEarnedPoints(Integer earnedPoints) {
+        this.earnedPoints = earnedPoints;
+    }
+
     public Double getDiscountAmount() {
         return discountAmount;
     }
 
     public void setDiscountAmount(Double discountAmount) {
         this.discountAmount = discountAmount;
+    }
+
+    public Double getDiscountPercent() { return discountPercent; }
+
+    public void setDiscountPercent(Double discountPercent) {
+        this.discountPercent = discountPercent;
     }
 
     public LocalDateTime getCreatedAt() {

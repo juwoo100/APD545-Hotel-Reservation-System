@@ -1,6 +1,6 @@
 package ca.seneca.application.model;
 
-import ca.seneca.application.enums.AdminRole;
+import ca.seneca.application.model.enums.AdminRole;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
@@ -21,15 +21,15 @@ public class Admin {
     @Column(nullable = false, unique = true)
     private String email;
 
+    @Column(nullable = false, unique = true)
+    private String password;
+
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private AdminRole role;
 
     @OneToMany(mappedBy = "admin")
     private List<Payment> payments = new ArrayList<>();
-
-    @OneToMany(mappedBy = "admin")
-    private List<Room> rooms = new ArrayList<>();
 
     public Admin() {
     }
@@ -58,6 +58,14 @@ public class Admin {
         this.email = email;
     }
 
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String email) {
+        this.password = password;
+    }
+
     public AdminRole getRole() {
         return role;
     }
@@ -74,11 +82,4 @@ public class Admin {
         this.payments = payments;
     }
 
-    public List<Room> getRooms() {
-        return rooms;
-    }
-
-    public void setRooms(List<Room> rooms) {
-        this.rooms = rooms;
-    }
 }

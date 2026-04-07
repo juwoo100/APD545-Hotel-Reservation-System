@@ -29,7 +29,7 @@ public class AddOnRepository {
         List<AddOn> results = em.createQuery("""
                 SELECT a
                 FROM AddOn a
-                WHERE LOWER(a.name) = :name
+                WHERE LOWER(a.addOnName) = :name
                 """, AddOn.class)
                 .setParameter("name", name.toLowerCase())
                 .getResultList();

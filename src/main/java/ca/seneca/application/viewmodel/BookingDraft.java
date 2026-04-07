@@ -82,8 +82,8 @@ public class BookingDraft {
     /** Sync multi-map → legacy fields (picks dominant type by quantity). */
     public void syncLegacyRoomFields() {
         roomSelections.entrySet().stream()
-                .max(Map.Entry.comparingByValue())
-                .ifPresent(e -> { roomType = e.getKey(); roomQuantity = e.getValue(); });
+            .max(Map.Entry.comparingByValue())
+            .ifPresent(e -> { roomType = e.getKey(); roomQuantity = e.getValue(); });
     }
 
     public String getFirstName() { return firstName; }

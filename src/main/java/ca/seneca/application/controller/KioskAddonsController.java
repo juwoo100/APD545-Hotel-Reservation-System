@@ -43,13 +43,14 @@ public class KioskAddonsController {
 
     @FXML
     private void handleNext() {
+
         BookingDraft draft = BookingSession.getCurrentDraft();
         draft.getAddOns().clear();
         if (wifiCheckBox      != null && wifiCheckBox.isSelected())      draft.getAddOns().add("WiFi");
         if (breakfastCheckBox != null && breakfastCheckBox.isSelected()) draft.getAddOns().add("Breakfast");
         if (parkingCheckBox   != null && parkingCheckBox.isSelected())   draft.getAddOns().add("Parking");
         if (spaCheckBox       != null && spaCheckBox.isSelected())       draft.getAddOns().add("Spa");
-
+        System.out.println("Review button clicked");
         AppContext.getSceneManager().switchScene(
                 "/views/kiosk_review.fxml", "Step 6 — Review Booking");
     }

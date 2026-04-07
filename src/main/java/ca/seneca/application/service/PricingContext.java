@@ -1,5 +1,9 @@
 package ca.seneca.application.service;
 
+import ca.seneca.application.service.strategy.PricingStrategy;
+import ca.seneca.application.service.strategy.StandardPricingStrategy;
+import ca.seneca.application.service.strategy.WeekendPricingStrategy;
+
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 
