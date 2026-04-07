@@ -145,6 +145,7 @@ public class DatabaseSeeder {
             Admin systemAdmin = new Admin();
             systemAdmin.setName("System Admin");
             systemAdmin.setEmail("sysadmin@hotel.com");
+            systemAdmin.setPassword("admin123");
             systemAdmin.setRole(AdminRole.SYSTEM_ADMIN);
             em.persist(systemAdmin);
 
