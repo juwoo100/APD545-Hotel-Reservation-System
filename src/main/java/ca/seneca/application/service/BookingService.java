@@ -218,6 +218,7 @@ public class BookingService {
         Guest guest = new Guest();
         guest.setFirstName(draft.getFirstName());
         guest.setLastName(draft.getLastName());
+        guest.setFullName((draft.getFirstName() + " " + draft.getLastName()).trim());
         guest.setPhone(draft.getPhone());
         guest.setEmail(draft.getEmail());
         guest.setAddress(draft.getAddress());
