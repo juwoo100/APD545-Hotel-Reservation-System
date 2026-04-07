@@ -1,11 +1,8 @@
-package com.hotel.app;
+package ca.seneca.application.app;
 
-import com.hotel.logging.AppLogger;
-import com.hotel.service.AdminAuthService;
-import com.hotel.service.BookingService;
-import com.hotel.service.PricingService;
-import com.hotel.service.impl.MockBookingService;
-import com.hotel.service.impl.MockPricingService;
+import ca.seneca.application.logging.AppLogger;
+import ca.seneca.application.repository.*;
+import ca.seneca.application.service.*;
 
 import java.util.logging.Logger;
 
@@ -19,22 +16,64 @@ public class AppContext {
 
     private static SceneManager sceneManager;
 
-    // Kiosk flow services (Mock now — your teammate replaces with real impls)
-    private static final BookingService bookingService = new MockBookingService();
-    private static final PricingService pricingService = new MockPricingService();
+    private static final GuestRepository guestRepository = new GuestRepository();
+    private static final ReservationRepository reservationRepository = new ReservationRepository();
+    private static final RoomRepository roomRepository = new RoomRepository();
+    private static final AddOnRepository addOnRepository = new AddOnRepository();
+    private static final PaymentRepository paymentRepository = new PaymentRepository();
+    private static final LoyaltyAccountRepository loyaltyAccountRepository = new LoyaltyAccountRepository();
+    private static final LoyaltyTransactionRepository loyaltyTransactionRepository = new LoyaltyTransactionRepository();
+    private static final WaitlistRepository waitlistRepository = new WaitlistRepository();
 
-    // Admin auth — real BCrypt, role-based discount caps
-    private static final AdminAuthService adminAuthService = AdminAuthService.getInstance();
+    private static final BookingService bookingService =
+            new BookingService(guestRepository, reservationRepository, roomRepository, addOnRepository);
+
+    private static final DiscountService discountService = new DiscountService();
+
+    private static final PaymentService paymentService =
+            new PaymentService(paymentRepository);
+
+    private static final LoyaltyService loyaltyService =
+            new LoyaltyService(loyaltyAccountRepository, loyaltyTransactionRepository);
+
+    private static final ReservationAdminService reservationAdminService =
+            new ReservationAdminService(
+                    reservationRepository,
+                    roomRepository,
+                    discountService,
+                    paymentService,
+                    loyaltyService,
+                    waitlistRepository
+            );
 
     private AppContext() {}
 
     public static void init(SceneManager manager) {
         sceneManager = manager;
-        log.info("AppContext initialised.");
+        log.info("AppContext initialized.");
     }
 
-    public static SceneManager      getSceneManager()    { return sceneManager; }
-    public static BookingService     getBookingService()  { return bookingService; }
-    public static PricingService     getPricingService()  { return pricingService; }
-    public static AdminAuthService   getAdminAuth()       { return adminAuthService; }
+    public static SceneManager getSceneManager() {
+        return sceneManager;
+    }
+
+    public static BookingService getBookingService() {
+        return bookingService;
+    }
+
+    public static DiscountService getDiscountService() {
+        return discountService;
+    }
+
+    public static PaymentService getPaymentService() {
+        return paymentService;
+    }
+
+    public static LoyaltyService getLoyaltyService() {
+        return loyaltyService;
+    }
+
+    public static ReservationAdminService getReservationAdminService() {
+        return reservationAdminService;
+    }
 }

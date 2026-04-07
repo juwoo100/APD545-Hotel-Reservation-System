@@ -1,7 +1,7 @@
-package com.hotel.repository;
+package ca.seneca.application.repository;
 
-import com.hotel.db.Database;
-import com.hotel.model.ActivityLog;
+import ca.seneca.application.db.Database;
+import ca.seneca.application.model.ActivityLog;
 import jakarta.persistence.EntityManager;
 import java.util.List;
 

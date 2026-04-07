@@ -1,9 +1,8 @@
-package com.hotel.repository;
+package ca.seneca.application.repository;
 
-import com.hotel.db.Database;
-import com.hotel.model.RoomEntity;
-import com.hotel.model.enums.RoomStatus;
-import com.hotel.model.enums.RoomType;
+import ca.seneca.application.db.Database;
+import ca.seneca.application.model.RoomEntity;
+import ca.seneca.application.model.enums.RoomType;
 import jakarta.persistence.EntityManager;
 import java.util.List;
 

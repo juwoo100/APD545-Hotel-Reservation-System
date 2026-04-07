@@ -1,7 +1,6 @@
 package ca.seneca.application.controller;
 
 import ca.seneca.application.app.AppContext;
-import ca.seneca.application.factory.RoomFactory;
 import ca.seneca.application.viewmodel.BookingDraft;
 import ca.seneca.application.viewmodel.BookingSession;
 import javafx.fxml.FXML;
@@ -79,10 +78,10 @@ public class KioskRoomSelectionController {
 
         // Calculate capacity using RoomFactory
         int capacity =
-                (singleQty    * RoomFactory.getMaxOccupancy("single"))    +
-                        (doubleQty    * RoomFactory.getMaxOccupancy("double"))    +
-                        (deluxeQty    * RoomFactory.getMaxOccupancy("deluxe"))    +
-                        (penthouseQty * RoomFactory.getMaxOccupancy("penthouse"));
+                (singleQty * 2) +
+                        (doubleQty * 4) +
+                        (deluxeQty * 2) +
+                        (penthouseQty * 2);
 
         if (capacity < totalGuests) {
             validationLabel.setText(

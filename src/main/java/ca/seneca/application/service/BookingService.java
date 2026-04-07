@@ -1,18 +1,17 @@
 package ca.seneca.application.service;
 
-import ca.seneca.application.enums.PaymentStatus;
-import ca.seneca.application.enums.ReservationStatus;
-import ca.seneca.application.enums.RoomAvailabilityStatus;
-import ca.seneca.application.model.AddOn;
-import ca.seneca.application.model.Guest;
-import ca.seneca.application.model.Reservation;
-import ca.seneca.application.model.ReservationAddOn;
-import ca.seneca.application.model.ReservationRoom;
-import ca.seneca.application.model.Room;
+import ca.seneca.application.model.*;
+import ca.seneca.application.model.enums.PaymentStatus;
+import ca.seneca.application.model.enums.ReservationStatus;
+import ca.seneca.application.model.enums.RoomAvailabilityStatus;
+import ca.seneca.application.model.enums.RoomType;
 import ca.seneca.application.repository.AddOnRepository;
 import ca.seneca.application.repository.GuestRepository;
 import ca.seneca.application.repository.ReservationRepository;
 import ca.seneca.application.repository.RoomRepository;
+import ca.seneca.application.service.decorator.*;
+import ca.seneca.application.service.strategy.PricingStrategy;
+import ca.seneca.application.service.strategy.StandardPricingStrategy;
 import ca.seneca.application.util.JpaUtil;
 import ca.seneca.application.viewmodel.BookingDraft;
 import jakarta.persistence.EntityManager;
@@ -39,7 +38,7 @@ public class BookingService {
 
     public Reservation createBooking(
             Guest guest,
-            List<Room> rooms,
+            List<RoomEntity> rooms,
             List<AddOn> addOns,
             LocalDate checkIn,
             LocalDate checkOut,
@@ -96,47 +95,48 @@ public class BookingService {
             reservation.setCreatedAt(LocalDateTime.now());
             reservation.setSpecialRequest(specialRequest);
 
-            double subtotal = 0.0;
+            double roomSubtotal = 0.0;
             int totalCapacity = 0;
 
-            for (Room room : rooms) {
-                Room managedRoom = em.find(Room.class, room.getRoomId());
+            for (RoomEntity room : rooms) {
+                RoomEntity managedRoom = em.find(RoomEntity.class, room.getId());
                 if (managedRoom == null) {
-                    throw new IllegalArgumentException("Room not found: " + room.getRoomId());
+                    throw new IllegalArgumentException("Room not found: " + room.getId());
                 }
 
-                if (managedRoom.getAvailabilityStatus() != RoomAvailabilityStatus.AVAILABLE) {
+                if (managedRoom.getStatus() != RoomAvailabilityStatus.AVAILABLE) {
                     throw new IllegalArgumentException("Room is not available: " + managedRoom.getRoomNumber());
                 }
 
-                totalCapacity += managedRoom.getRoomType().getCapacity();
-
-                ReservationRoom rr = new ReservationRoom();
-                rr.setRoom(managedRoom);
-
-                double nightlyRate = pricingStrategy.calculateNightlyRate(managedRoom.getRoomType().getBasePrice(), checkIn);
+                totalCapacity += managedRoom.getMaxOccupancy();
 
                 double roomTotal = 0.0;
                 LocalDate currentDate = checkIn;
+
                 while (currentDate.isBefore(checkOut)) {
                     roomTotal += pricingStrategy.calculateNightlyRate(
-                            managedRoom.getRoomType().getBasePrice(),
+                            managedRoom.getBasePrice(),
                             currentDate
                     );
                     currentDate = currentDate.plusDays(1);
                 }
 
-                rr.setNightlyRate(nightlyRate);
+                ReservationRoom rr = new ReservationRoom();
+                rr.setRoom(managedRoom);
+                rr.setNightlyRate(pricingStrategy.calculateNightlyRate(managedRoom.getBasePrice(), checkIn));
                 rr.setLineTotal(roomTotal);
                 rr.setGuestsAssigned(0);
+
                 reservation.addReservationRoom(rr);
-
-                subtotal += roomTotal;
+                roomSubtotal += roomTotal;
             }
-
             if (totalCapacity < totalGuests) {
                 throw new IllegalArgumentException("Selected rooms do not have enough capacity for all guests.");
             }
+
+            long nights = checkOut.toEpochDay() - checkIn.toEpochDay();
+
+            BillComponent bill = new BaseBill(roomSubtotal, "Room Charges");
 
             if (addOns != null) {
                 for (AddOn addOn : addOns) {
@@ -152,19 +152,34 @@ public class BookingService {
                     ra.setLineTotal(managedAddOn.getBasePrice());
 
                     reservation.addReservationAddOn(ra);
-                    subtotal += ra.getLineTotal();
+
+
+                    switch (managedAddOn.getAddOnName()) {
+                        case "WiFi" -> bill = new WifiDecorator(bill);
+                        case "Breakfast" -> bill = new BreakfastDecorator(bill, nights);
+                        case "Parking" -> bill = new ParkingDecorator(bill, nights);
+                        case "Spa" -> bill = new SpaDecorator(bill);
+                    }
                 }
             }
 
+            double finalSubtotal = bill.getTotal();
+
             double discountAmount = 0.0;
             double taxRate = 0.13;
-            double taxAmount = subtotal * taxRate;
-            double totalAmount = subtotal - discountAmount + taxAmount;
+            double taxAmount = roomSubtotal * taxRate;
+            double totalAmount = roomSubtotal - discountAmount + taxAmount;
 
-            reservation.setSubTotal(subtotal);
+            reservation.setSubTotal(finalSubtotal);
             reservation.setDiscountAmount(discountAmount);
-            // reservation.setTaxAmount(taxAmount); // add this if your entity has the field
             reservation.setTotalAmount(totalAmount);
+
+
+            for (ReservationRoom rr : reservation.getReservationRooms()) {
+                RoomEntity bookedRoom = rr.getRoom();
+                bookedRoom.setStatus(RoomAvailabilityStatus.RESERVED);
+                em.merge(bookedRoom);
+            }
 
             reservation = reservationRepository.save(em, reservation);
 
@@ -181,6 +196,20 @@ public class BookingService {
         }
     }
 
+    public double calculateRoomTotal(double basePrice, int quantity,
+                                     LocalDate checkIn, LocalDate checkOut,
+                                     PricingStrategy strategy) {
+        double total = 0.0;
+        LocalDate current = checkIn;
+
+        while (current.isBefore(checkOut)) {
+            total += strategy.calculateNightlyRate(basePrice, current) * quantity;
+            current = current.plusDays(1);
+        }
+
+        return total;
+    }
+
     public String completeBooking(BookingDraft draft) {
         if (draft == null) {
             throw new IllegalArgumentException("Booking draft cannot be null.");
@@ -195,7 +224,7 @@ public class BookingService {
         guest.setCity(draft.getCity());
         guest.setCountry(draft.getCountry());
 
-        List<Room> rooms = resolveRoomsFromDraft(draft);
+        List<RoomEntity> rooms = resolveRoomsFromDraft(draft);
         List<AddOn> addOns = resolveAddOnsFromDraft(draft);
 
         PricingStrategy pricingStrategy = new StandardPricingStrategy();
@@ -215,29 +244,30 @@ public class BookingService {
         return "RES-" + reservation.getReservationId();
     }
 
-    private List<Room> resolveRoomsFromDraft(BookingDraft draft) {
-        EntityManager em = JpaUtil.getEntityManager();
+    private List<RoomEntity> resolveRoomsFromDraft(BookingDraft draft) {
+        List<RoomEntity> selectedRooms = new ArrayList<>();
 
-        try {
-            List<Room> selectedRooms = new ArrayList<>();
+        for (Map.Entry<String, Integer> entry : draft.getRoomSelections().entrySet()) {
+            String roomTypeName = entry.getKey();
+            int quantity = entry.getValue();
 
-            for (Map.Entry<String, Integer> entry : draft.getRoomSelections().entrySet()) {
-                String roomTypeName = entry.getKey();
-                int quantity = entry.getValue();
-
-                List<Room> availableRooms = roomRepository.findAvailableRoomsByTypeName(em, roomTypeName);
-
-                if (availableRooms.size() < quantity) {
-                    throw new IllegalArgumentException("Not enough available rooms for type: " + roomTypeName);
-                }
-
-                selectedRooms.addAll(availableRooms.subList(0, quantity));
+            RoomType roomType;
+            try {
+                roomType = RoomType.valueOf(roomTypeName.toUpperCase());
+            } catch (IllegalArgumentException e) {
+                throw new IllegalArgumentException("Invalid room type: " + roomTypeName);
             }
 
-            return selectedRooms;
-        } finally {
-            em.close();
+            List<RoomEntity> availableRooms = roomRepository.findAvailableByType(roomType);
+
+            if (availableRooms.size() < quantity) {
+                throw new IllegalArgumentException("Not enough available rooms for type: " + roomTypeName);
+            }
+
+            selectedRooms.addAll(availableRooms.subList(0, quantity));
         }
+
+        return selectedRooms;
     }
 
     private List<AddOn> resolveAddOnsFromDraft(BookingDraft draft) {

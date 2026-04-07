@@ -1,6 +1,6 @@
-package com.hotel.app;
+package ca.seneca.application.app;
 
-import com.hotel.logging.AppLogger;
+import ca.seneca.application.logging.AppLogger;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;

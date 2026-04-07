@@ -1,7 +1,7 @@
-package com.hotel.model;
+package ca.seneca.application.model;
 
-import com.hotel.model.enums.RoomStatus;
-import com.hotel.model.enums.RoomType;
+import ca.seneca.application.model.enums.RoomAvailabilityStatus;
+import ca.seneca.application.model.enums.RoomType;
 import jakarta.persistence.*;
 
 @Entity
@@ -27,7 +27,7 @@ public class RoomEntity {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private RoomStatus status = RoomStatus.AVAILABLE;
+    private RoomAvailabilityStatus status = RoomAvailabilityStatus.AVAILABLE;
 
     public RoomEntity() {}
     public RoomEntity(String roomNumber, RoomType type, int maxOccupancy, double basePrice) {
@@ -44,8 +44,8 @@ public class RoomEntity {
     public void setMaxOccupancy(int m) { this.maxOccupancy = m; }
     public double getBasePrice() { return basePrice; }
     public void setBasePrice(double p) { this.basePrice = p; }
-    public RoomStatus getStatus() { return status; }
-    public void setStatus(RoomStatus s) { this.status = s; }
+    public RoomAvailabilityStatus getStatus() { return status; }
+    public void setStatus(RoomAvailabilityStatus s) { this.status = s; }
 
     @Override
     public String toString() {

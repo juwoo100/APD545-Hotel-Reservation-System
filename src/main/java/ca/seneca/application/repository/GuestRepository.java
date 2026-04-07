@@ -1,7 +1,7 @@
-package com.hotel.repository;
+package ca.seneca.application.repository;
 
-import com.hotel.db.Database;
-import com.hotel.model.GuestEntity;
+import ca.seneca.application.db.Database;
+import ca.seneca.application.model.Guest;
 import jakarta.persistence.EntityManager;
 import java.util.List;
 import java.util.Optional;
@@ -9,36 +9,67 @@ import java.util.Optional;
 public class GuestRepository {
     private final Database db = Database.getInstance();
 
-    public GuestEntity save(GuestEntity g) {
-        EntityManager em = db.createEntityManager();
-        try { em.getTransaction().begin();
-              GuestEntity result = g.getId() == null ? g : em.merge(g);
-              if (g.getId() == null) em.persist(result);
-              em.getTransaction().commit(); return result; }
-        catch (Exception e) { em.getTransaction().rollback(); throw e; }
-        finally { em.close(); }
+    public Guest save(EntityManager em, Guest guest) {
+        if (guest.getGuestId() == null) {
+            em.persist(guest);
+            return guest;
+        }
+        return em.merge(guest);
     }
 
-    public GuestEntity persist(GuestEntity g) {
+    public Guest save(Guest guest) {
         EntityManager em = db.createEntityManager();
-        try { em.getTransaction().begin(); em.persist(g);
-              em.getTransaction().commit(); return g; }
-        catch (Exception e) { em.getTransaction().rollback(); throw e; }
-        finally { em.close(); }
+        try {
+            em.getTransaction().begin();
+            Guest result;
+            if (guest.getGuestId() == null) {
+                em.persist(guest);
+                result = guest;
+            } else {
+                result = em.merge(guest);
+            }
+            em.getTransaction().commit();
+            return result;
+        } catch (Exception e) {
+            em.getTransaction().rollback();
+            throw e;
+        } finally {
+            em.close();
+        }
     }
 
-    public Optional<GuestEntity> findByPhone(String phone) {
+    public Optional<Guest> findById(Integer guestId) {
         EntityManager em = db.createEntityManager();
-        try { List<GuestEntity> r = em.createQuery(
-            "SELECT g FROM GuestEntity g WHERE g.phone=:p", GuestEntity.class)
-            .setParameter("p", phone).getResultList();
-              return r.isEmpty() ? Optional.empty() : Optional.of(r.get(0)); }
-        finally { em.close(); }
+        try {
+            return Optional.ofNullable(em.find(Guest.class, guestId));
+        } finally {
+            em.close();
+        }
     }
 
-    public List<GuestEntity> findAll() {
+    public Optional<Guest> findByPhone(String phone) {
         EntityManager em = db.createEntityManager();
-        try { return em.createQuery("SELECT g FROM GuestEntity g ORDER BY g.lastName", GuestEntity.class).getResultList(); }
-        finally { em.close(); }
+        try {
+            List<Guest> result = em.createQuery(
+                    "SELECT g FROM Guest g WHERE g.phone = :phone",
+                    Guest.class
+            ).setParameter("phone", phone).getResultList();
+
+            return result.isEmpty() ? Optional.empty() : Optional.of(result.get(0));
+        } finally {
+            em.close();
+        }
+    }
+
+    public List<Guest> findAll() {
+        EntityManager em = db.createEntityManager();
+        try {
+            return em.createQuery(
+                    "SELECT g FROM Guest g ORDER BY g.lastName, g.firstName",
+                    Guest.class
+            ).getResultList();
+        } finally {
+            em.close();
+        }
     }
 }

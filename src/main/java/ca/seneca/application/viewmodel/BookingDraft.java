@@ -1,4 +1,4 @@
-package com.hotel.viewmodel;
+package ca.seneca.application.viewmodel;
 
 import java.time.LocalDate;
 import java.util.ArrayList;

@@ -1,4 +1,4 @@
-package com.hotel.security;
+package ca.seneca.application.security;
 
 import at.favre.lib.crypto.bcrypt.BCrypt;
 

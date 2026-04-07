@@ -1,7 +1,7 @@
 package ca.seneca.application.model;
 
-import ca.seneca.application.enums.PaymentMethod;
-import ca.seneca.application.enums.PaymentStatus;
+import ca.seneca.application.model.enums.PaymentMethod;
+import ca.seneca.application.model.enums.PaymentStatus;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;

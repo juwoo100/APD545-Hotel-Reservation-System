@@ -1,4 +1,4 @@
-package com.hotel.model;
+package ca.seneca.application.model;
 
 import jakarta.persistence.*;
 import java.time.LocalDateTime;

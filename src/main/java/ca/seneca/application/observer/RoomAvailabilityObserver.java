@@ -1,7 +1,7 @@
-package com.hotel.observer;
+package ca.seneca.application.observer;
 
-import com.hotel.model.RoomEntity;
-import com.hotel.model.WaitlistEntry;
+import ca.seneca.application.model.RoomEntity;
+import ca.seneca.application.model.WaitlistEntry;
 import java.util.List;
 
 /**

@@ -1,4 +1,4 @@
-package com.hotel.service;
+package ca.seneca.application.service;
 
 public class NavigationService {
 }

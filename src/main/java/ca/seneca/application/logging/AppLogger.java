@@ -1,4 +1,4 @@
-package com.hotel.logging;
+package ca.seneca.application.logging;
 
 import java.io.IOException;
 import java.util.logging.*;

@@ -1,4 +1,4 @@
-package ca.seneca.application.enums;
+package ca.seneca.application.model.enums;
 
 public enum PaymentMethod {
     CASH,

@@ -1,4 +1,4 @@
-package com.hotel.db;
+package ca.seneca.application.db;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
@@ -13,7 +13,7 @@ public class Database {
     private final EntityManagerFactory emf;
 
     private Database() {
-        emf = Persistence.createEntityManagerFactory("hotelPU");
+        emf = Persistence.createEntityManagerFactory("hotel-reservation-pu");
     }
 
     public static synchronized Database getInstance() {

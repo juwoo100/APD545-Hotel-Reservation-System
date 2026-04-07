@@ -1,10 +1,10 @@
-package com.hotel.service;
+package ca.seneca.application.service;
 
-import com.hotel.logging.AppLogger;
-import com.hotel.model.AdminUser;
-import com.hotel.model.enums.AdminRole;
-import com.hotel.repository.AdminUserRepository;
-import com.hotel.security.PasswordHasher;
+import ca.seneca.application.logging.AppLogger;
+import ca.seneca.application.model.AdminUser;
+import ca.seneca.application.model.enums.AdminRole;
+import ca.seneca.application.repository.AdminUserRepository;
+import ca.seneca.application.security.PasswordHasher;
 
 import java.util.Optional;
 import java.util.logging.Logger;

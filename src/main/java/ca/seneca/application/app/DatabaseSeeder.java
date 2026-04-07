@@ -1,18 +1,16 @@
 package ca.seneca.application.app;
 
 import ca.seneca.application.model.AddOn;
-import ca.seneca.application.model.RoomType;
+import ca.seneca.application.model.Admin;
+import ca.seneca.application.model.enums.RoomAvailabilityStatus;
+import ca.seneca.application.model.enums.RoomType;
 import ca.seneca.application.util.JpaUtil;
 import jakarta.persistence.EntityManager;
 
 import ca.seneca.application.logging.AppLogger;
-import ca.seneca.application.model.AdminUser;
 import ca.seneca.application.model.RoomEntity;
 import ca.seneca.application.model.enums.AdminRole;
-import ca.seneca.application.model.enums.RoomType;
-import ca.seneca.application.repository.AdminUserRepository;
 import ca.seneca.application.repository.RoomRepository;
-import ca.seneca.application.security.PasswordHasher;
 
 import java.util.logging.Logger;
 
@@ -26,85 +24,137 @@ public class DatabaseSeeder {
     private DatabaseSeeder() {}
 
     public static void seedAll() {
-        seedRoomTypesAndAddOns();
+        seedAddOns();
         seedRooms();
         seedAdmins();
     }
 
-    private static void seedRoomTypesAndAddOns() {
+    private static void seedAddOns() {
         EntityManager em = JpaUtil.getEntityManager();
-
         try {
-
-            Long roomTypeCount = em.createQuery("SELECT COUNT(rt) FROM RoomType rt", Long.class)
-                    .getSingleResult();
-
+            Long count = em.createQuery("SELECT COUNT(a) FROM AddOn a", Long.class).getSingleResult();
             if (count > 0) {
-                log.info("RoomTypes already seeded - skipping.");
+                log.info("AddOns already seeded - skipping.");
                 return;
             }
+
             em.getTransaction().begin();
 
-            RoomType single = new RoomType("Single", 2, 120.0);
-            RoomType doubleRoom = new RoomType("Double", 4, 200.0);
-            RoomType deluxe = new RoomType("Deluxe", 2, 260.0);
-            RoomType penthouse = new RoomType("Penthouse", 2, 450.0);
+            AddOn wifi = new AddOn();
+            wifi.setAddOnName("WiFi");
+            wifi.setBasePrice(15.0);
+            wifi.setDescription("High-speed internet");
 
-            em.persist(single);
-            em.persist(doubleRoom);
-            em.persist(deluxe);
-            em.persist(penthouse);
+            AddOn breakfast = new AddOn();
+            breakfast.setAddOnName("Breakfast");
+            breakfast.setBasePrice(20.0);
+            breakfast.setDescription("Buffet breakfast");
 
-            em.persist(new AddOn("Wifi", 15.0, "High-speed internet", "PER_RESERVATION", "Y"));
-            em.persist(new AddOn("Breakfast", 20.0, "Buffet breakfast", "PER_NIGHT", "Y"));
-            em.persist(new AddOn("Parking", 25.0, "Underground parking", "PER_NIGHT", "Y"));
-            em.persist(new AddOn("Spa", 60.0, "Spa access", "PER_RESERVATION", "Y"));
+            AddOn parking = new AddOn();
+            parking.setAddOnName("Parking");
+            parking.setBasePrice(25.0);
+            parking.setDescription("Underground parking");
+
+            AddOn spa = new AddOn();
+            spa.setAddOnName("Spa");
+            spa.setBasePrice(60.0);
+            spa.setDescription("Spa access");
+
+            em.persist(wifi);
+            em.persist(breakfast);
+            em.persist(parking);
+            em.persist(spa);
 
             em.getTransaction().commit();
-            log.info("RoomTypes & AddOns seeded.");
-
+            log.info("AddOns seeded.");
         } catch (Exception e) {
             if (em.getTransaction().isActive()) em.getTransaction().rollback();
             throw e;
         } finally {
             em.close();
         }
-
     }
 
     private static void seedRooms() {
         RoomRepository repo = new RoomRepository();
         if (repo.countByType(RoomType.SINGLE) > 0) {
-            log.info("Rooms already seeded — skipping.");
+            log.info("Rooms already seeded - skipping.");
             return;
-
         }
+
         log.info("Seeding rooms...");
 
-        // Singles: 101-106
-        for (int i = 1; i <= 6; i++)
-            repo.save(new RoomEntity("10" + i, RoomType.SINGLE, 2, 120.0));
-        // Doubles: 201-206
-        for (int i = 1; i <= 6; i++)
-            repo.save(new RoomEntity("20" + i, RoomType.DOUBLE, 4, 200.0));
-        // Deluxe: 301-304
-        for (int i = 1; i <= 4; i++)
-            repo.save(new RoomEntity("30" + i, RoomType.DELUXE, 2, 260.0));
-        // Penthouse: 401-402
-        repo.save(new RoomEntity("401", RoomType.PENTHOUSE, 2, 450.0));
-        repo.save(new RoomEntity("402", RoomType.PENTHOUSE, 2, 450.0));
-        log.info("Seeded 18 rooms.");
+        for (int i = 1; i <= 6; i++) {
+            RoomEntity room = new RoomEntity("10" + i, RoomType.SINGLE, 2, 120.0);
+            room.setStatus(RoomAvailabilityStatus.AVAILABLE);
+            repo.save(room);
+        }
+
+        for (int i = 1; i <= 6; i++) {
+            RoomEntity room = new RoomEntity("20" + i, RoomType.DOUBLE, 4, 200.0);
+            room.setStatus(RoomAvailabilityStatus.AVAILABLE);
+            repo.save(room);
+        }
+
+        for (int i = 1; i <= 4; i++) {
+            RoomEntity room = new RoomEntity("30" + i, RoomType.DELUXE, 2, 260.0);
+            room.setStatus(RoomAvailabilityStatus.AVAILABLE);
+            repo.save(room);
+        }
+
+        RoomEntity penthouse1 = new RoomEntity("401", RoomType.PENTHOUSE, 2, 450.0);
+        penthouse1.setStatus(RoomAvailabilityStatus.AVAILABLE);
+        repo.save(penthouse1);
+
+        RoomEntity penthouse2 = new RoomEntity("402", RoomType.PENTHOUSE, 2, 450.0);
+        penthouse2.setStatus(RoomAvailabilityStatus.AVAILABLE);
+        repo.save(penthouse2);
+
+        log.info("Rooms seeded.");
     }
 
     private static void seedAdmins() {
-        AdminUserRepository repo = new AdminUserRepository();
-        if (repo.count() > 0) {
-            log.info("Admin accounts already seeded — skipping.");
-            return;
+        EntityManager em = JpaUtil.getEntityManager();
+        try {
+            Long count = em.createQuery("SELECT COUNT(a) FROM Admin a", Long.class).getSingleResult();
+            if (count > 0) {
+                log.info("Admins already seeded - skipping.");
+                return;
+            }
+
+            em.getTransaction().begin();
+
+            Admin manager = new Admin();
+            manager.setName("Hotel Manager");
+            manager.setEmail("manager@hotel.com");
+            manager.setRole(AdminRole.MANAGER);
+            em.persist(manager);
+
+            Admin frontDesk = new Admin();
+            frontDesk.setName("Front Desk");
+            frontDesk.setEmail("frontdesk@hotel.com");
+            frontDesk.setRole(AdminRole.FRONT_DESK);
+            em.persist(frontDesk);
+
+            Admin accountant = new Admin();
+            accountant.setName("Accountant");
+            accountant.setEmail("accountant@hotel.com");
+            accountant.setRole(AdminRole.ACCOUNTANT);
+            em.persist(accountant);
+
+            Admin systemAdmin = new Admin();
+            systemAdmin.setName("System Admin");
+            systemAdmin.setEmail("sysadmin@hotel.com");
+            systemAdmin.setRole(AdminRole.SYSTEM_ADMIN);
+            em.persist(systemAdmin);
+
+            em.getTransaction().commit();
+            log.info("Admins seeded.");
+        } catch (Exception e) {
+            if (em.getTransaction().isActive()) em.getTransaction().rollback();
+            throw e;
+        } finally {
+            em.close();
         }
-        log.info("Seeding admin accounts...");
-        repo.persist(new AdminUser("admin",   PasswordHasher.hash("admin123"),   AdminRole.ADMIN,   "Hotel Administrator"));
-        repo.persist(new AdminUser("manager", PasswordHasher.hash("manager123"), AdminRole.MANAGER, "Hotel Manager"));
-        log.info("Seeded: admin/admin123  |  manager/manager123");
     }
 }

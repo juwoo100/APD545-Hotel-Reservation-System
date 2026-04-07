@@ -1,6 +1,6 @@
-package com.hotel.model;
+package ca.seneca.application.model;
 
-import com.hotel.model.enums.RoomType;
+import ca.seneca.application.model.enums.RoomType;
 import jakarta.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -15,7 +15,7 @@ public class WaitlistEntry {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "guest_id", nullable = false)
-    private GuestEntity guest;
+    private Guest guest;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
@@ -29,8 +29,8 @@ public class WaitlistEntry {
     public WaitlistEntry() {}
 
     public Long getId() { return id; }
-    public GuestEntity getGuest() { return guest; }
-    public void setGuest(GuestEntity g) { this.guest = g; }
+    public Guest getGuest() { return guest; }
+    public void setGuest(Guest g) { this.guest = g; }
     public RoomType getRequestedType() { return requestedType; }
     public void setRequestedType(RoomType t) { this.requestedType = t; }
     public LocalDate getDesiredCheckIn() { return desiredCheckIn; }

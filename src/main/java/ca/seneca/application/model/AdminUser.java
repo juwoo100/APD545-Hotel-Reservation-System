@@ -1,6 +1,6 @@
-package com.hotel.model;
+package ca.seneca.application.model;
 
-import com.hotel.model.enums.AdminRole;
+import ca.seneca.application.model.enums.AdminRole;
 import jakarta.persistence.*;
 
 @Entity
