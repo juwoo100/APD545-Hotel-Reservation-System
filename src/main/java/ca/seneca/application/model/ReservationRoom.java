@@ -17,12 +17,12 @@ public class ReservationRoom {
 
     @ManyToOne
     @JoinColumn(name = "room_id", nullable = false)
-    private Room room;
+    private RoomEntity room;
 
     @Column(name = "nightly_rate")
     private Double nightlyRate;
 
-    @Column(name = "lineTotal")
+    @Column(name = "line_total")
     private Double lineTotal;
 
     @Column(name = "guests_assigned")
@@ -47,11 +47,11 @@ public class ReservationRoom {
         this.reservation = reservation;
     }
 
-    public Room getRoom() {
+    public RoomEntity getRoom() {
         return room;
     }
 
-    public void setRoom(Room room) {
+    public void setRoom(RoomEntity room) {
         this.room = room;
     }
 

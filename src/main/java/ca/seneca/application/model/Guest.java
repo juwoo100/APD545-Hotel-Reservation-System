@@ -18,8 +18,12 @@ public class Guest {
     @Column(name = "last_name", nullable = false)
     private String lastName;
 
+    @Column(name = "full_name", nullable = false)
+    private String fullName;
+
     private String email;
     private String phone;
+
     private String address;
     @Column(name = "postal_code")
     private String postalCode;
@@ -64,6 +68,14 @@ public class Guest {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
+    }
+
+    public String getFullName() {
+        return fullName;
+    }
+
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
     }
 
     public String getPhone() {

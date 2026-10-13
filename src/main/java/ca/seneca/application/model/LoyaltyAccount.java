@@ -1,6 +1,6 @@
 package ca.seneca.application.model;
 
-import ca.seneca.application.enums.LoyaltyStatus;
+import ca.seneca.application.model.enums.LoyaltyStatus;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
@@ -24,10 +24,10 @@ public class LoyaltyAccount {
     private String loyaltyNumber;
 
     @Column(name = "points_balance")
-    private Integer pointsBalance;
+    private Integer pointsBalance = 0;
 
     @Column(name = "earning_rate")
-    private Double earningRate;
+    private Double earningRate = 0.10;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)

@@ -1,74 +1,43 @@
 package ca.seneca.application.model;
 
-import ca.seneca.application.enums.WaitlistStatus;
+import ca.seneca.application.model.enums.RoomType;
 import jakarta.persistence.*;
-
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "WaitlistEntry")
+@Table(name = "waitlist")
 public class WaitlistEntry {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "waitlist_id")
-    private Integer waitlistId;
+    private Long id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "guest_id", nullable = false)
     private Guest guest;
 
-    @Column(name = "request_date")
-    private LocalDate requestDate;
-
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private WaitlistStatus status;
+    private RoomType requestedType;
 
-    @ManyToOne
-    @JoinColumn(name = "preferred_room_type_id")
-    private RoomType preferredRoomType;
+    @Column(nullable = false) private LocalDate desiredCheckIn;
+    @Column(nullable = false) private LocalDate desiredCheckOut;
+    @Column(nullable = false) private LocalDateTime addedAt = LocalDateTime.now();
+    @Column(nullable = false) private boolean notified = false;
 
-    public WaitlistEntry() {
-    }
+    public WaitlistEntry() {}
 
-    public Integer getWaitlistId() {
-        return waitlistId;
-    }
-
-    public void setWaitlistId(Integer waitlistId) {
-        this.waitlistId = waitlistId;
-    }
-
-    public Guest getGuest() {
-        return guest;
-    }
-
-    public void setGuest(Guest guest) {
-        this.guest = guest;
-    }
-
-    public LocalDate getRequestDate() {
-        return requestDate;
-    }
-
-    public void setRequestDate(LocalDate requestDate) {
-        this.requestDate = requestDate;
-    }
-
-    public WaitlistStatus getStatus() {
-        return status;
-    }
-
-    public void setStatus(WaitlistStatus status) {
-        this.status = status;
-    }
-
-    public RoomType getPreferredRoomType() {
-        return preferredRoomType;
-    }
-
-    public void setPreferredRoomType(RoomType preferredRoomType) {
-        this.preferredRoomType = preferredRoomType;
-    }
+    public Long getId() { return id; }
+    public Guest getGuest() { return guest; }
+    public void setGuest(Guest g) { this.guest = g; }
+    public RoomType getRequestedType() { return requestedType; }
+    public void setRequestedType(RoomType t) { this.requestedType = t; }
+    public LocalDate getDesiredCheckIn() { return desiredCheckIn; }
+    public void setDesiredCheckIn(LocalDate d) { this.desiredCheckIn = d; }
+    public LocalDate getDesiredCheckOut() { return desiredCheckOut; }
+    public void setDesiredCheckOut(LocalDate d) { this.desiredCheckOut = d; }
+    public LocalDateTime getAddedAt() { return addedAt; }
+    public boolean isNotified() { return notified; }
+    public void setNotified(boolean v) { this.notified = v; }
 }

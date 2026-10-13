@@ -1,5 +1,6 @@
 package ca.seneca.application.model;
 
+import ca.seneca.application.model.enums.LoyaltyTransactionType;
 import jakarta.persistence.*;
 import java.time.LocalDate;
 
@@ -16,8 +17,9 @@ public class LoyaltyTransaction {
     @JoinColumn(name = "loyalty_account_id", nullable = false)
     private LoyaltyAccount loyaltyAccount;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "transaction_type")
-    private String transactionType;
+    private LoyaltyTransactionType transactionType;
 
     private Integer points;
 
@@ -48,11 +50,11 @@ public class LoyaltyTransaction {
         this.loyaltyAccount = loyaltyAccount;
     }
 
-    public String getTransactionType() {
+    public LoyaltyTransactionType getTransactionType() {
         return transactionType;
     }
 
-    public void setTransactionType(String transactionType) {
+    public void setTransactionType(LoyaltyTransactionType transactionType) {
         this.transactionType = transactionType;
     }
 

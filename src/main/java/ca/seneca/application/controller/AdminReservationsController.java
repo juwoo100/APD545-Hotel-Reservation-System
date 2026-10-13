@@ -15,6 +15,11 @@ public class AdminReservationsController {
     }
 
     @FXML
+    private void handleSearch(ActionEvent event) {
+
+    }
+
+    @FXML
     private void handleCloseWindow() {
         // fallback for buttons without ActionEvent
         Stage stage = Stage.getWindows().stream()

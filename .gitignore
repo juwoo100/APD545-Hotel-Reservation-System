@@ -12,6 +12,7 @@ target/
 *.iws
 *.iml
 *.ipr
+.idea/
 
 ### Eclipse ###
 .apt_generated
@@ -37,3 +38,20 @@ build/
 
 ### Mac OS ###
 .DS_Store
+
+### Environment
+.env
+.env.*
+
+### Logs
+logs/
+*.log
+
+### JVM crach logs
+hs_err_pid*
+replay_pid*
+
+# Database
+*.db
+*.sqlite
+*.sqlite3

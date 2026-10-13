@@ -5,7 +5,7 @@ import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
 
 public final class JpaUtil {
-    private static final EntityManagerFactory emf = Persistence.createEntityManagerFactory("default");
+    private static final EntityManagerFactory emf = Persistence.createEntityManagerFactory("hotel-reservation-pu");
 
     private JpaUtil() {
 
